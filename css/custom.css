@@ -1,11 +1,66 @@
+html
+{
+  height: 100%;
+  background-image: url("../images/background.jpg");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-attachment: fixed;
+}
 .container
 {
   margin-top: 3rem;
   margin-bottom: 3rem;
 }
 
+/*planned_for_day*/
+.listed-exercise-name a
+{
+  display: block;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  text-decoration: none;
+  color: rgb(34, 34, 34);
+}
+
+.listed-exercise-name hr
+{
+  margin: 0;
+}
+
+.completed
+{
+  background-image: url("../images/check.svg");
+  background-size: 3rem;
+  background-repeat: no-repeat;
+  background-position: right center;
+}
+
+.completed a
+{
+  color: rgb(70, 70, 70);
+}
+
+/*performance_input*/
 .planned-excercise
 {
   font-size: 1.2rem;
   color: #404040;
+}
+
+h4 .header-nav-icon
+{
+  height: 2.25rem;
+}
+
+input[type=number]
+{
+  -moz-appearance: textfield;
+}
+::-webkit-inner-spin-button
+{
+  -webkit-appearance: none;
+}
+::-webkit-outer-spin_button
+{
+  -webkit-appearance: none;
 }
