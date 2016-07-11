@@ -6,10 +6,17 @@ html
   background-size: 100% 100%;
   background-attachment: fixed;
 }
+
 .container
 {
   margin-top: 3rem;
   margin-bottom: 3rem;
+}
+
+.button img,
+button img
+{
+  height: 100%;
 }
 
 /*planned_for_day*/
@@ -40,6 +47,11 @@ html
   color: rgb(70, 70, 70);
 }
 
+.start-hidden
+{
+  display: none;
+}
+
 /*performance_input*/
 .planned-excercise
 {
@@ -52,15 +64,29 @@ h4 .header-nav-icon
   height: 2.25rem;
 }
 
-input[type=number]
+/*create_plan*/
+table thead a
 {
-  -moz-appearance: textfield;
+  color: rgb(34, 34, 34);
+  text-decoration: none;
 }
-::-webkit-inner-spin-button
+
+table thead a:hover
 {
-  -webkit-appearance: none;
+  color: rgb(50, 50, 50);
 }
-::-webkit-outer-spin_button
+
+table thead img
 {
-  -webkit-appearance: none;
+  height: 1.5rem;
+}
+
+table tbody a
+{
+  color: rgb(34, 34, 34);
+}
+
+table tbody a:hover
+{
+  color: rgb(50, 50, 50);
 }

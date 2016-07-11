@@ -1,0 +1,7 @@
+<?php
+
+define('MYSQLERR_FOREIGN_KEY_FAILS', 1452);
+define('MYSQLERR_DUPLICATE_KEY', 1062);
+
+
+?>
