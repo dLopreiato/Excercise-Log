@@ -53,7 +53,7 @@ function SavePerformance()
     var inputWeights = $('input:text[id=weightInput]').val();
     var inputIncrease = ($('input[id=increaseInput]').is(':checked')) ? (1) : (0);
     $.ajax({
-        url: "//" + window.location.hostname + "/api/SavePerfformance.php",
+        url: "//" + window.location.hostname + "/api/SavePerformance.php",
         dataType: "json",
         data: {"id": excerciseId, "repetitions": inputRepetitions, "weights": inputWeights, "ready_to_increase": inputIncrease},
         method: "POST",
