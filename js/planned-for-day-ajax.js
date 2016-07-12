@@ -1,11 +1,11 @@
 $(document).ready(function() {
     $.ajax({
-        url: "//" + window.location.hostname + "/api/GetTodaysExcercises.php",
+        url: "//" + window.location.hostname + "/api/GetTodaysExercises.php",
         dataType: "json",
         success: function(data) {
             for (var index in data)
             {
-                AddExcercise(data[index]['excercise_id'], data[index]['name'], data[index]['completed']);
+                AddExercise(data[index]['exercise_id'], data[index]['name'], data[index]['completed']);
             }
         },
         error: function(xhr, ajaxOptions, thrownError) {
@@ -15,7 +15,7 @@ $(document).ready(function() {
     });
 });
 
-function AddExcercise(id, name, completed)
+function AddExercise(id, name, completed)
 {
-    $('#excercise-list').append('<div class="row listed-exercise-name"><div class="six columns ' + ((completed == 1) ? 'completed': '') + '"><hr /><a href="performance_input.html?id=' + id + '">' + name + '</a></div></div>');
+    $('#exercise-list').append('<div class="row listed-exercise-name"><div class="six columns ' + ((completed == 1) ? 'completed': '') + '"><hr /><a href="performance_input.html?id=' + id + '">' + name + '</a></div></div>');
 }
