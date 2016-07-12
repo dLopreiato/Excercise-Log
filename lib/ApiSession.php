@@ -64,6 +64,21 @@ class ApiSession
         $this->CheckDBError();
     }
 
+    public function GetTodaysExcercises()
+    {
+        $todaysExcercisesQuery = 'SELECT p.excercise_id, e.name, (if((SELECT pe.performed_reps FROM performed_excercise pe WHERE pe.performed_date=CURRENT_DATE AND pe.excercise_id=p.excercise_id) IS NULL, 0, 1)) as \'completed\' FROM planned_excercise p LEFT JOIN excercises e ON p.excercise_id=e.id WHERE p.planned_date=CURRENT_DATE ORDER BY completed ASC';
+        $todaysExcercisesRes = $this->dbConnection->query($todaysExcercisesQuery);
+        $this->CheckDBError();
+        $returnArray = array();
+
+        while ($row = $todaysExcercisesRes->fetch_assoc())
+        {
+            $returnArray[] = $row;
+        }
+
+        return $returnArray;
+    }
+
     private function CheckDBError()
     {
         if ($this->dbConnection->errno != 0)
