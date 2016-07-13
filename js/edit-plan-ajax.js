@@ -1,5 +1,6 @@
 $(document).ready(function() {
     $('#readable-date').html(GetDateString(getUrlVars()['exerciseDate']));
+    $('#add-exercise-button').prop('href', 'edit_exercise.html?date=' + getUrlVars()['exerciseDate']);
 
     $.ajax({
         url: "//" + window.location.hostname + "/api/GetWorkoutCategories.php",
