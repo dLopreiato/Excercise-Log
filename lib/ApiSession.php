@@ -121,6 +121,37 @@ class ApiSession
         }
     }
 
+    public function GetFullPlanByDate($date)
+    {
+        self::VerifyInputIsDate($date);
+
+        $fullPlanInfoQuery = 'SELECT pe.exercise_id, e.name, '
+            . '((SELECT GROUP_CONCAT(m.name) FROM exercise_muscle_mapping emm LEFT JOIN muscles m ON m.id=emm.muscle_id GROUP BY emm.exercise_id HAVING emm.exercise_id=pe.exercise_id)) as `muscles`, '
+            . '(SELECT performed_date FROM performed_exercise WHERE exercise_id=pe.exercise_id ORDER BY performed_date DESC LIMIT 0,1) as `last_performed`, '
+            . 'pe.goal_reps, pe.goal_weights FROM planned_exercise pe LEFT JOIN exercises e ON e.id=pe.exercise_id '
+            . 'WHERE pe.planned_date=\'%1$s\'';
+        $fullPlanInfoRes = $this->dbConnection->query(sprintf($fullPlanInfoQuery, $date));
+        $this->CheckDBError();
+
+        $returnArray = array();
+        while ($row = $fullPlanInfoRes->fetch_assoc())
+        {
+            $returnArray[] = $row;
+        }
+
+        return $returnArray;
+    }
+
+    public function RemoveExerciseFromPlan($date, $id)
+    {
+        self::VerifyInputIsDate($date);
+        self::VerifyInputIsInteger($id);
+
+        $removeExerciseQuery = 'DELETE FROM planned_exercise WHERE planned_date=\'%1$s\' AND exercise_id=%2$d';
+        $this->dbConnection->query(sprintf($removeExerciseQuery, $date, $id));
+        $this->CheckDBError();
+    }
+
     private function CheckDBError()
     {
         if ($this->dbConnection->errno != 0)
