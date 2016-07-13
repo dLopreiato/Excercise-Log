@@ -17,5 +17,5 @@ $(document).ready(function() {
 
 function AddExercise(id, name, completed)
 {
-    $('#exercise-list').append('<div class="row listed-exercise-name"><div class="six columns ' + ((completed == 1) ? 'completed': '') + '"><hr /><a href="performance_input.html?id=' + id + '">' + name + '</a></div></div>');
+    $('#exercise-list').append('<div class="row barred-list"><div class="six columns ' + ((completed == 1) ? 'completed': '') + '"><hr /><a href="performance_input.html?id=' + id + '">' + name + '</a></div></div>');
 }

@@ -19,8 +19,7 @@ button img
   height: 100%;
 }
 
-/*planned_for_day*/
-.listed-exercise-name a
+.barred-list a
 {
   display: block;
   padding-top: 2rem;
@@ -29,11 +28,12 @@ button img
   color: rgb(34, 34, 34);
 }
 
-.listed-exercise-name hr
+.barred-list hr
 {
   margin: 0;
 }
 
+/*planned_for_day*/
 .completed
 {
   background-image: url("../images/check.svg");
