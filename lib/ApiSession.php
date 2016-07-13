@@ -79,11 +79,61 @@ class ApiSession
         return $returnArray;
     }
 
+    public function GetWorkoutCategories()
+    {
+        $categoriesQuery = 'SELECT id, category FROM workout_categories';
+        $categoriesRes = $this->dbConnection->query($categoriesQuery);
+        $this->CheckDBError();
+        $returnArray = array();
+
+        while ($row = $categoriesRes->fetch_assoc())
+        {
+            $returnArray[] = $row;
+        }
+
+        return $returnArray;
+    }
+
+    public function SetWorkoutCategory($date, $categoryId)
+    {
+        self::VerifyInputIsInteger($categoryId);
+        self::VerifyInputIsDate($date);
+
+        $setCategoryQuery = 'INSERT INTO planned_workout (planned_date, category) VALUES (\'%1$s\', %2$d) ON DUPLICATE KEY UPDATE category=%2$d';
+        $this->dbConnection->query(sprintf($setCategoryQuery, $date, $categoryId));
+        $this->CheckDBError();
+    }
+
+    public function GetCurrentWorkoutCategory($date)
+    {
+        self::VerifyInputIsDate($date);
+
+        $selectCategoryQuery = 'SELECT category FROM planned_workout WHERE planned_date=\'%1$s\'';
+        $selectCategoryRes = $this->dbConnection->query(sprintf($selectCategoryQuery, $date));
+        $this->CheckDBError();
+        if ($selectCategoryRes->num_rows <= 0)
+        {
+            return null;
+        }
+        else
+        {
+            return $selectCategoryRes->fetch_assoc();
+        }
+    }
+
     private function CheckDBError()
     {
         if ($this->dbConnection->errno != 0)
         {
             throw new Exception('A database error has occurred: ' . $this->dbConnection->errno);
+        }
+    }
+
+    private static function VerifyInputIsDate($input)
+    {
+        if (preg_match('/^[\d]{4}-[\d]{2}-[\d]{2}$/', $input) == 0)
+        {
+            throw new Exception('Given input is not valid for a date.');
         }
     }
 
