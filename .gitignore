@@ -1,3 +1,4 @@
 *.sublime-*
 lib/server_variables.php
 *.log
+js/server-variables.js

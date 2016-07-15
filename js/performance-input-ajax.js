@@ -6,7 +6,7 @@ $(document).ready(function() {
 function PopulateExerciseInformation(exerciseId)
 {
     $.ajax({
-        url: "//" + window.location.hostname + "/api/GetExerciseById.php",
+        url: RELATIVE_ROOT_DIR + "/api/GetExerciseById.php",
         dataType: "json",
         data: {"id": exerciseId},
         method: "GET",
@@ -29,7 +29,7 @@ function PopulateExerciseInformation(exerciseId)
 function PopulatePlanInformation(exerciseId)
 {
     $.ajax({
-        url: "//" + window.location.hostname + "/api/GetPlanByExercise.php",
+        url: RELATIVE_ROOT_DIR + "/api/GetPlanByExercise.php",
         dataType: "json",
         data: {"id": exerciseId},
         method: "GET",
@@ -53,7 +53,7 @@ function SavePerformance()
     var inputWeights = $('input:text[id=weightInput]').val();
     var inputIncrease = ($('input[id=increaseInput]').is(':checked')) ? (1) : (0);
     $.ajax({
-        url: "//" + window.location.hostname + "/api/SavePerformance.php",
+        url: RELATIVE_ROOT_DIR + "/api/SavePerformance.php",
         dataType: "json",
         data: {"id": exerciseId, "repetitions": inputRepetitions, "weights": inputWeights, "ready_to_increase": inputIncrease},
         method: "POST",

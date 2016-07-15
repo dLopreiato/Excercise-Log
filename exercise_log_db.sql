@@ -34,17 +34,6 @@ CREATE TABLE `exercises` (
   `reference_video` varchar(256) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=ascii;
 
---
--- Dumping data for table `exercises`
---
-
-INSERT INTO `exercises` (`id`, `name`, `reference_video`) VALUES
-(1, 'Push Ups', ''),
-(2, 'Full Squat', ''),
-(3, 'Front Squat', ''),
-(4, 'Bulgarian Squat', ''),
-(5, 'Calf Raises', '');
-
 -- --------------------------------------------------------
 
 --
@@ -55,18 +44,6 @@ CREATE TABLE `exercise_muscle_mapping` (
   `exercise_id` int(10) UNSIGNED NOT NULL,
   `muscle_id` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=ascii;
-
---
--- Dumping data for table `exercise_muscle_mapping`
---
-
-INSERT INTO `exercise_muscle_mapping` (`exercise_id`, `muscle_id`) VALUES
-(1, 1),
-(1, 4),
-(2, 8),
-(3, 8),
-(4, 8),
-(5, 9);
 
 -- --------------------------------------------------------
 
@@ -135,14 +112,6 @@ CREATE TABLE `planned_exercise` (
   `goal_weights` varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=ascii;
 
---
--- Dumping data for table `planned_exercise`
---
-
-INSERT INTO `planned_exercise` (`planned_date`, `exercise_id`, `goal_reps`, `goal_weights`) VALUES
-('2016-07-11', 1, '41', '1'),
-('2016-07-14', 1, '3x15', 'Bodyweight');
-
 -- --------------------------------------------------------
 
 --
@@ -153,14 +122,6 @@ CREATE TABLE `planned_workout` (
   `planned_date` date NOT NULL,
   `category` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=ascii;
-
---
--- Dumping data for table `planned_workout`
---
-
-INSERT INTO `planned_workout` (`planned_date`, `category`) VALUES
-('2016-07-11', 1),
-('2016-07-14', 1);
 
 -- --------------------------------------------------------
 

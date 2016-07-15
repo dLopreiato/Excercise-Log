@@ -3,7 +3,7 @@ $(document).ready(function() {
     $('#add-exercise-button').prop('href', 'edit_exercise.html?date=' + getUrlVars()['exerciseDate']);
 
     $.ajax({
-        url: "//" + window.location.hostname + "/api/GetWorkoutCategories.php",
+        url: RELATIVE_ROOT_DIR + "/api/GetWorkoutCategories.php",
         dataType: "json",
         success: function(data) {
             for (var index in data)
@@ -11,7 +11,7 @@ $(document).ready(function() {
                 $('#select-category').append('<option value="' + data[index]['id'] + '">' + data[index]['category'] + '</option>');
             }
                 $.ajax({
-                    url: "//" + window.location.hostname + "/api/GetCurrentWorkoutCategory.php",
+                    url: RELATIVE_ROOT_DIR + "/api/GetCurrentWorkoutCategory.php",
                     method: 'GET',
                     data: {'date': getUrlVars()['exerciseDate']},
                     dataType: "json",
@@ -35,7 +35,7 @@ $(document).ready(function() {
     });
 
     $.ajax({
-        url: "//" + window.location.hostname + "/api/GetFullPlanByDate.php",
+        url: RELATIVE_ROOT_DIR + "/api/GetFullPlanByDate.php",
         data: {'date': getUrlVars()['exerciseDate']},
         method: 'GET',
         dataType: 'json',
@@ -57,7 +57,7 @@ $(document).ready(function() {
 function onCategorySelect()
 {
     $.ajax({
-        url: "//" + window.location.hostname + "/api/SetWorkoutCategory.php",
+        url: RELATIVE_ROOT_DIR + "/api/SetWorkoutCategory.php",
         data: {'date': getUrlVars()['exerciseDate'], 'category_id': $('#select-category').val()},
         method: 'GET',
         dataType: 'json',
@@ -90,7 +90,7 @@ function removeExercise(exerciseId, name)
     if (confirm('Are you sure you want to remove ' + name + ' from your plan?'))
     {
         $.ajax({
-            url: "//" + window.location.hostname + "/api/RemoveExerciseFromPlan.php",
+            url: RELATIVE_ROOT_DIR + "/api/RemoveExerciseFromPlan.php",
             data: {'date': getUrlVars()['exerciseDate'], 'id': exerciseId},
             method: 'GET',
             dataType: 'json',

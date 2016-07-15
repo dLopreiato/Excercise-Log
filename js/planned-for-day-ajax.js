@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $.ajax({
-        url: "//" + window.location.hostname + "/api/GetTodaysExercises.php",
+        url: RELATIVE_ROOT_DIR + "/api/GetTodaysExercises.php",
         dataType: "json",
         success: function(data) {
             for (var index in data)

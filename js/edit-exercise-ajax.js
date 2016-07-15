@@ -22,7 +22,7 @@ $(document).ready(function() {
 function PreparePageForEditing()
 {
     $.ajax({
-        url: "//" + window.location.hostname + "/api/GetExerciseById.php",
+        url: RELATIVE_ROOT_DIR + "/api/GetExerciseById.php",
         data: {'id': ID_PARAM},
         method: 'GET',
         dataType: 'json',
@@ -42,7 +42,7 @@ function PreparePageForEditing()
     });
 
     $.ajax({
-        url: "//" + window.location.hostname + "/api/GetPlanByExercise.php",
+        url: RELATIVE_ROOT_DIR + "/api/GetPlanByExercise.php",
         data: {'date': DATE_PARAM, 'id': ID_PARAM},
         method: 'GET',
         dataType: 'json',
@@ -62,7 +62,7 @@ function PreparePageForEditing()
 function PreparePageForNewExercise()
 {
     $.ajax({
-        url: "//" + window.location.hostname + "/api/GetAllMuscles.php",
+        url: RELATIVE_ROOT_DIR + "/api/GetAllMuscles.php",
         dataType: 'json',
         success: function(data) {
             for (var index in data)
@@ -78,7 +78,7 @@ function PreparePageForNewExercise()
     });
 
     $.ajax({
-        url: "//" + window.location.hostname + "/api/GetAllExercises.php",
+        url: RELATIVE_ROOT_DIR + "/api/GetAllExercises.php",
         dataType: 'json',
         success: function(data) {
             FULL_EXERCISES = data;
@@ -95,7 +95,7 @@ function PreparePageForNewExercise()
     });
 
     $.ajax({
-        url: "//" + window.location.hostname + "/api/GetExercisesByMuscle.php",
+        url: RELATIVE_ROOT_DIR + "/api/GetExercisesByMuscle.php",
         dataType: 'json',
         success: function(data) {
             EXERCISE_LIST = data;
@@ -145,7 +145,7 @@ function onExerciseChange()
 function onSaveClick()
 {
     $.ajax({
-        url: "//" + window.location.hostname + "/api/SavePlanedExercise.php",
+        url: RELATIVE_ROOT_DIR + "/api/SavePlanedExercise.php",
         data: {'date': getUrlVars()['date'], 'exercise_id': $('#exerciseInput').val(), 'reps': $('#setRepInput').val(),
             'weights': $('#weightInput').val()},
         method: 'GET',
@@ -165,7 +165,7 @@ function showHistoryPage(pageNumber)
 {
     $('#history-table tbody').html('');
     $.ajax({
-        url: "//" + window.location.hostname + "/api/GetExerciseHistory.php",
+        url: RELATIVE_ROOT_DIR + "/api/GetExerciseHistory.php",
         data: {'id': ID_PARAM, 'page': pageNumber},
         method: 'GET',
         dataType: 'json',
