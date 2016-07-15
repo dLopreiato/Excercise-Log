@@ -37,16 +37,20 @@ class ApiSession
         return $returnArray;
     }
 
-    public function GetPlanByExercise($id)
+    public function GetPlanByExercise($id, $date)
     {
         self::VerifyInputIsInteger($id);
+        if ($date != null)
+        {
+            self::VerifyInputIsDate($date);
+        }
 
-        $planInfoQuery = 'SELECT goal_reps, goal_weights FROM planned_exercise WHERE exercise_id=%1$d AND planned_date=CURRENT_DATE';
-        $planInfoRes = $this->dbConnection->query(sprintf($planInfoQuery, $id));
+        $planInfoQuery = 'SELECT goal_reps, goal_weights FROM planned_exercise WHERE exercise_id=%1$d AND planned_date=%2$s';
+        $planInfoRes = $this->dbConnection->query(sprintf($planInfoQuery, $id, (($date == null) ? ('CURRENT_DATE') : ('\'' . $date . '\''))));
         $this->CheckDBError();
         if ($planInfoRes->num_rows <= 0)
         {
-            throw new Exception('There are no plans for this exercise today.');
+            throw new Exception('There are no plans for this exercise on this date.');
         }
 
         return $planInfoRes->fetch_assoc();
@@ -61,6 +65,19 @@ class ApiSession
         $savePerformanceQuery = 'INSERT INTO performed_exercise (`performed_date`, `exercise_id`, `performed_reps`, `performed_weights`, `ready_to_increase`)'
             . ' VALUES (CURRENT_DATE, %1$d, \'%2$s\', \'%3$s\', %4$d) ON DUPLICATE KEY UPDATE `performed_reps`=\'%2$s\', `performed_weights`=\'%3$s\', `ready_to_increase`=%4$s';
         $this->dbConnection->query(sprintf($savePerformanceQuery, $id, $repetitions, $weight, $readyToIncrease));
+        $this->CheckDBError();
+    }
+
+    public function SavePlanedExercise($date, $id, $repetitions, $weight)
+    {
+        self::VerifyInputIsDate($date);
+        self::VerifyInputIsInteger($id);
+        self::VerifyInputIsRepetition($repetitions);
+        self::VerifyInputIsWeight($weight);
+
+        $savePerformanceQuery = 'INSERT INTO planned_exercise (`planned_date`, `exercise_id`, `goal_reps`, `goal_weights`)'
+            . ' VALUES (\'%1$s\', %2$d, \'%3$s\', \'%4$s\') ON DUPLICATE KEY UPDATE `goal_reps`=\'%3$s\', `goal_weights`=\'%4$s\'';
+        $this->dbConnection->query(sprintf($savePerformanceQuery, $date, $id, $repetitions, $weight));
         $this->CheckDBError();
     }
 
@@ -150,6 +167,70 @@ class ApiSession
         $removeExerciseQuery = 'DELETE FROM planned_exercise WHERE planned_date=\'%1$s\' AND exercise_id=%2$d';
         $this->dbConnection->query(sprintf($removeExerciseQuery, $date, $id));
         $this->CheckDBError();
+    }
+
+    public function GetAllMuscles()
+    {
+        $selectMusclesQuery = 'SELECT id, name FROM muscles';
+        $selectMusclesRes = $this->dbConnection->query($selectMusclesQuery);
+        $this->CheckDBError();
+        $returnArray = array();
+        while ($row = $selectMusclesRes->fetch_assoc())
+        {
+            $returnArray[] = $row;
+        }
+        return $returnArray;
+    }
+
+    public function GetAllExercises()
+    {
+        $selectExercisesQuery = 'SELECT id, name FROM exercises';
+        $selectExercisesRes = $this->dbConnection->query($selectExercisesQuery);
+        $this->CheckDBError();
+        $returnArray = array();
+        while ($row = $selectExercisesRes->fetch_assoc())
+        {
+            $returnArray[] = $row;
+        }
+        return $returnArray;
+    }
+
+    public function GetExercisesByMuscle()
+    {
+        $selectExercisesQuery = 'SELECT emm.muscle_id, e.id as `exercise_id`, e.name as `exercise` FROM exercise_muscle_mapping emm LEFT JOIN exercises e ON emm.exercise_id=e.id';
+        $selectExercisesRes = $this->dbConnection->query($selectExercisesQuery);
+        $this->CheckDBError();
+        $returnArray = array();
+        while ($row = $selectExercisesRes->fetch_assoc())
+        {
+            $returnArray[] = $row;
+        }
+        return $returnArray;
+    }
+
+    public function GetExerciseHistory($id, $page)
+    {
+        self::VerifyInputIsInteger($id);
+        self::VerifyInputIsInteger($page);
+
+        $pageSize = 10;
+        $offset = $page * $pageSize;
+        $returnArray = array('totalPages' => null, 'history' => array());
+
+        $historyQuery = 'SELECT performed_date, performed_reps, performed_weights, ready_to_increase FROM performed_exercise WHERE exercise_id=%1$d ORDER BY performed_date DESC LIMIT %2$d,%3$d';
+        $historyRes = $this->dbConnection->query(sprintf($historyQuery, $id, $offset, $pageSize));
+        $this->CheckDBError();
+        while ($row = $historyRes->fetch_assoc())
+        {
+            $returnArray['history'][] = $row;
+        }
+        
+        $totalRowsQuery = 'SELECT count(*) as \'totalRows\' FROM performed_exercise WHERE exercise_id=%1$d';
+        $totalRowsRes = $this->dbConnection->query(sprintf($totalRowsQuery, $id));
+        $this->CheckDBError();
+        $returnArray['totalPages'] = ceil($totalRowsRes->fetch_assoc()['totalRows'] / $pageSize);
+
+        return $returnArray;
     }
 
     private function CheckDBError()

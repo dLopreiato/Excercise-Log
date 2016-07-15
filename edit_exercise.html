@@ -23,6 +23,11 @@
   <link rel="stylesheet" href="css/skeleton.css">
   <link rel="stylesheet" href="css/custom.css">
 
+  <!-- JavaScript
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script src="js/jquery-3.0.0.min.js"></script>
+  <script src="js/getUrlVars.js"></script>
+
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href="images/favicon.png">
@@ -36,45 +41,46 @@
     <div class="row">
       <div class="twelve columns">
         <h4>
-          <a href="create_plan.html"><img src="images/back_arrow.svg" class="header-nav-icon" /></a>
-          Add/Edit an Ecercise
+          <a href="create_plan.html" id="back-button"><img src="images/back_arrow.svg" class="header-nav-icon" /></a>
+          Manage an Exercise
+          <img src="images/check.svg" class="ajax-response-icon start-hidden" id="acknowledge-success" />
+          <img src="images/red_x.svg" class="ajax-response-icon start-hidden" id="acknowledge-failure" />
         </h4>
       </div>
     </div>
-    <form>
-      <div class="row">
+    <div class="row">
+      <div class="six columns">
+        <label for="muscleFilter">Muscle</label>
+        <select id="muscleFilter" onchange="onMuscleFilterChange();"><option selected value="0">All</option></select>
+      </div>
+      <div class="six columns">
+        <label for="exerciseInput">Exercise</label>
+        <select id="exerciseInput" onchange="onExerciseChange();"><option disabled selected value="-1">Choose an Exercise</option></select>
+      </div>
+    </div>
+
+    <div class="row">
         <div class="six columns">
-          <label for="muscleFilter">Muscle</label>
-          <select id="muscleFilter"><option>All</option><option>Arms</option></select>
+          <label for="setRepInput"><span data-tooltip="Plan: 4,4,3">Goal Repetitions</span></label>
+          <input class="u-full-width" placeholder="5,4,3" id="setRepInput" type="text" />
         </div>
         <div class="six columns">
-          <label for="exerciseInput">Exercise</label>
-          <select id="exerciseInput"><option>Push Ups</option><option>Curls</option></select>
+          <label for="weightInput"><span data-tooltip="Plan: 80,80,90">Goal Weight<span></label>
+          <input class="u-full-width" placeholder="10,15,10" id="weightInput" type="text" />
         </div>
-      </div>
-
-      <div class="row">
-          <div class="six columns">
-            <label for="setRepInput"><span data-tooltip="Plan: 4,4,3">Goal Repetitions</span></label>
-            <input class="u-full-width" placeholder="5,4,3" id="setRepInput" type="number" />
-          </div>
-          <div class="six columns">
-            <label for="weightInput"><span data-tooltip="Plan: 80,80,90">Goal Weight<span></label>
-            <input class="u-full-width" placeholder="10,15,10" id="weightInput" type="number" />
-          </div>
-      </div>
+    </div>
 
 
-      <div class="row">
-        <input class="button-primary" value="Save" type="submit" />
-      </div>
-    </form>
+    <div class="row">
+      <input class="button-primary" value="Save" type="submit" onclick="onSaveClick();" />
+    </div>
 
     <div class="row">
       <h5>History</h5>
-      <table>
+      <table id="history-table">
         <thead>
           <tr>
+            <th></th>
             <th>Sets</th>
             <th>Weights</th>
             <th>Performed On</th>
@@ -82,34 +88,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>5,4,3</td>
-            <td>100,105,110</td>
-            <td>3 days ago</td>
-            <td>Weight Focused</td>
-          </tr>
-          <tr>
-            <td>5,4,3</td>
-            <td>100,105,110</td>
-            <td>3 days ago</td>
-            <td>Weight Focused</td>
-          </tr>
-          <tr>
-            <td>5,4,3</td>
-            <td>100,105,110</td>
-            <td>20 days ago</td>
-            <td>Repetition Focused</td>
-          </tr>
         </tbody>
       </table>
-      <button><img src="images/beginning_arrow.svg" /></button>
-      <button><img src="images/back_arrow.svg" /></button>
-      <button><img src="images/next_arrow.svg" /></button>
-      <button><img src="images/end_arrow.svg" /></button>
+      <button onclick="navigateHistory('first');" class="start-hidden history-newer">&#124;&#060;</button>
+      <button onclick="navigateHistory('back');" class="start-hidden history-newer">&#060;</button>
+      <button onclick="navigateHistory('next');" class="start-hidden history-older">&#062;</button>
+      <button onclick="navigateHistory('last');" class="start-hidden history-older">&#062;&#124;</button>
     </div>
 
-    <div class="row">
-      <h5>How To</h5>
+    <!-- For when I fully implement reference vidoes
+    <div class="row" id="reference-video">
+      <h5>Reference</h5>
       <div class="row exercise-video-container">
         <div class="twelve columns">
           <video width="100%" preload="metadata" poster="http://placehold.it/400x400?text=Show+Exercise" controls muted>
@@ -117,9 +106,10 @@
           </video>
         </div>
       </div>
-    </div>
+    </div>-->
   </div>
 
+  <script src="js/edit-exercise-ajax.js"></script>
 <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 </body>

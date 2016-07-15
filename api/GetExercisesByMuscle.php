@@ -9,7 +9,7 @@ try
 {
     $session = new ApiSession(new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DBNAME));
 
-    apiDataHandler($session->GetPlanByExercise($_GET['id'], (isset($_GET['date']) ? ($_GET['date']) : (null))));
+    apiDataHandler($session->GetExercisesByMuscle());
 }
 catch (Exception $e)
 {
