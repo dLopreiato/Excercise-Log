@@ -33,19 +33,27 @@
   <!-- Primary Page Layout
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <div class="container u-full-width">
-    <div class="row">
-        <h4>
-          Choose a Date
-        </h4>
-    </div>
 
-    <form method="GET" action="edit_plan.html">
-      <div class="row">
+    <div class="row">
+      <div class="five columns">
+        <h4>
+          <a href="planned_for_day.html">Perform Today's Workout</a>
+        </h4>
+      </div>
+      <div class="two columns">
+        <h4>Or</h4>
+      </div>
+      <div class="five columns">
+        <h4>
+          Plan a Workout
+        </h4>
+        <form method="GET" action="edit_plan.html">
           <label for="dateInput">Date</label>
           <input id="dateInput" type="date" name="exerciseDate" placeholder="yyyy-mm-dd" />
           <input class="button-primary" value="Create a Plan" type="submit" />
+        </form>
       </div>
-    </form>
+    </div>
 
     <!-- For future feature additions
     <div class="row">
