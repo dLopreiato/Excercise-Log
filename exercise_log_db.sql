@@ -92,13 +92,6 @@ CREATE TABLE `performed_exercise` (
   `ready_to_increase` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=ascii;
 
---
--- Dumping data for table `performed_exercise`
---
-
-INSERT INTO `performed_exercise` (`performed_date`, `exercise_id`, `performed_reps`, `performed_weights`, `ready_to_increase`) VALUES
-('2016-07-11', 1, '3x15', 'Bodyweight', 1);
-
 -- --------------------------------------------------------
 
 --
