@@ -217,7 +217,7 @@ class ApiSession
         $offset = $page * $pageSize;
         $returnArray = array('totalPages' => null, 'history' => array());
 
-        $historyQuery = 'SELECT performed_date, performed_reps, performed_weights, ready_to_increase FROM performed_exercise WHERE exercise_id=%1$d ORDER BY performed_date DESC LIMIT %2$d,%3$d';
+        $historyQuery = 'SELECT pe.performed_date, pe.performed_reps, pe.performed_weights, pe.ready_to_increase, wc.category FROM performed_exercise pe LEFT JOIN planned_workout pw ON pe.performed_date=pw.planned_date LEFT JOIN workout_categories wc ON wc.id=pw.category WHERE exercise_id=%1$d ORDER BY performed_date DESC LIMIT %2$d,%3$d';
         $historyRes = $this->dbConnection->query(sprintf($historyQuery, $id, $offset, $pageSize));
         $this->CheckDBError();
         while ($row = $historyRes->fetch_assoc())

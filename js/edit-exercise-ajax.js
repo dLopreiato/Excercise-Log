@@ -175,12 +175,15 @@ function showHistoryPage(pageNumber)
             {
                 $('.history-older').show();
             }
+            var thisDate = new Date();
             for (var histInd in data['history'])
             {
+                var performed = new Date(data['history'][histInd]['performed_date']);
+                var dayDifference = Math.ceil((thisDate.getTime() - performed.getTime()) / (1000 * 3600 * 24));
                 $('#history-table tbody').append('<tr><td>' + ((data['history'][histInd]['ready_to_increase'] == 1) ? ('<span title="Ready to Increase">(+)</span>') : (''))
                     + '</td><td>' + data['history'][histInd]['performed_reps'] + '</td><td>'
                     + data['history'][histInd]['performed_weights'] 
-                    + '</td><td>X DAYS AGO</td><td>CATEGORY</td></tr>');
+                    + '</td><td>' + dayDifference + ' days ago</td><td>' + data['history'][histInd]['category'] + '</td></tr>');
             }
         },
         error: function(xhr, ajaxOptions, thrownError) {
