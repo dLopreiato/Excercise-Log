@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 11, 2016 at 05:43 AM
+-- Generation Time: Jul 15, 2016 at 02:05 AM
 -- Server version: 10.1.9-MariaDB
 -- PHP Version: 5.5.30
 
@@ -19,43 +19,54 @@ SET time_zone = "+00:00";
 --
 -- Database: `exercise_log`
 --
+CREATE DATABASE IF NOT EXISTS `exercise_log` DEFAULT CHARACTER SET ascii COLLATE ascii_general_ci;
+USE `exercise_log`;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `excercises`
+-- Table structure for table `exercises`
 --
 
-CREATE TABLE `excercises` (
+CREATE TABLE `exercises` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(128) NOT NULL,
   `reference_video` varchar(256) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=ascii;
 
 --
--- Dumping data for table `excercises`
+-- Dumping data for table `exercises`
 --
 
-INSERT INTO `excercises` (`id`, `name`, `reference_video`) VALUES
-(1, 'Push Ups', '');
+INSERT INTO `exercises` (`id`, `name`, `reference_video`) VALUES
+(1, 'Push Ups', ''),
+(2, 'Full Squat', ''),
+(3, 'Front Squat', ''),
+(4, 'Bulgarian Squat', ''),
+(5, 'Calf Raises', '');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `excercise_muscle_mapping`
+-- Table structure for table `exercise_muscle_mapping`
 --
 
-CREATE TABLE `excercise_muscle_mapping` (
-  `excercise_id` int(10) UNSIGNED NOT NULL,
+CREATE TABLE `exercise_muscle_mapping` (
+  `exercise_id` int(10) UNSIGNED NOT NULL,
   `muscle_id` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=ascii;
 
 --
--- Dumping data for table `excercise_muscle_mapping`
+-- Dumping data for table `exercise_muscle_mapping`
 --
 
-INSERT INTO `excercise_muscle_mapping` (`excercise_id`, `muscle_id`) VALUES
-(1, 4);
+INSERT INTO `exercise_muscle_mapping` (`exercise_id`, `muscle_id`) VALUES
+(1, 1),
+(1, 4),
+(2, 8),
+(3, 8),
+(4, 8),
+(5, 9);
 
 -- --------------------------------------------------------
 
@@ -88,49 +99,49 @@ INSERT INTO `muscles` (`id`, `name`) VALUES
 (13, 'Middle Back (rhomboids)'),
 (14, 'Lower Back'),
 (15, 'Glutes (gluteus)'),
-(16, 'Quads (quadriceps)'),
-(17, 'Hamstrings (biceps femoris)');
+(16, 'Hamstrings (biceps femoris)');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `performed_excercise`
+-- Table structure for table `performed_exercise`
 --
 
-CREATE TABLE `performed_excercise` (
+CREATE TABLE `performed_exercise` (
   `performed_date` date NOT NULL,
-  `excercise_id` int(10) UNSIGNED NOT NULL,
+  `exercise_id` int(10) UNSIGNED NOT NULL,
   `performed_reps` varchar(32) NOT NULL,
   `performed_weights` varchar(32) NOT NULL,
   `ready_to_increase` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=ascii;
 
 --
--- Dumping data for table `performed_excercise`
+-- Dumping data for table `performed_exercise`
 --
 
-INSERT INTO `performed_excercise` (`performed_date`, `excercise_id`, `performed_reps`, `performed_weights`, `ready_to_increase`) VALUES
-('2016-07-10', 1, '3x15', 'Bodyweight', 0);
+INSERT INTO `performed_exercise` (`performed_date`, `exercise_id`, `performed_reps`, `performed_weights`, `ready_to_increase`) VALUES
+('2016-07-11', 1, '3x15', 'Bodyweight', 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `planned_excercise`
+-- Table structure for table `planned_exercise`
 --
 
-CREATE TABLE `planned_excercise` (
+CREATE TABLE `planned_exercise` (
   `planned_date` date NOT NULL,
-  `excercise_id` int(10) UNSIGNED NOT NULL,
+  `exercise_id` int(10) UNSIGNED NOT NULL,
   `goal_reps` varchar(32) NOT NULL,
   `goal_weights` varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=ascii;
 
 --
--- Dumping data for table `planned_excercise`
+-- Dumping data for table `planned_exercise`
 --
 
-INSERT INTO `planned_excercise` (`planned_date`, `excercise_id`, `goal_reps`, `goal_weights`) VALUES
-('2016-07-10', 1, '3x15', 'Bodyweight');
+INSERT INTO `planned_exercise` (`planned_date`, `exercise_id`, `goal_reps`, `goal_weights`) VALUES
+('2016-07-11', 1, '41', '1'),
+('2016-07-14', 1, '3x15', 'Bodyweight');
 
 -- --------------------------------------------------------
 
@@ -148,7 +159,8 @@ CREATE TABLE `planned_workout` (
 --
 
 INSERT INTO `planned_workout` (`planned_date`, `category`) VALUES
-('2016-07-10', 1);
+('2016-07-11', 1),
+('2016-07-14', 1);
 
 -- --------------------------------------------------------
 
@@ -174,18 +186,18 @@ INSERT INTO `workout_categories` (`id`, `category`) VALUES
 --
 
 --
--- Indexes for table `excercises`
+-- Indexes for table `exercises`
 --
-ALTER TABLE `excercises`
+ALTER TABLE `exercises`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `excercise_muscle_mapping`
+-- Indexes for table `exercise_muscle_mapping`
 --
-ALTER TABLE `excercise_muscle_mapping`
-  ADD PRIMARY KEY (`excercise_id`,`muscle_id`),
-  ADD UNIQUE KEY `muscle_id` (`muscle_id`),
-  ADD KEY `excercise_id` (`excercise_id`);
+ALTER TABLE `exercise_muscle_mapping`
+  ADD PRIMARY KEY (`exercise_id`,`muscle_id`),
+  ADD KEY `excercise_id` (`exercise_id`),
+  ADD KEY `muscle_id` (`muscle_id`) USING BTREE;
 
 --
 -- Indexes for table `muscles`
@@ -194,18 +206,18 @@ ALTER TABLE `muscles`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `performed_excercise`
+-- Indexes for table `performed_exercise`
 --
-ALTER TABLE `performed_excercise`
-  ADD PRIMARY KEY (`performed_date`,`excercise_id`),
-  ADD KEY `excercise_id` (`excercise_id`);
+ALTER TABLE `performed_exercise`
+  ADD PRIMARY KEY (`performed_date`,`exercise_id`),
+  ADD KEY `excercise_id` (`exercise_id`);
 
 --
--- Indexes for table `planned_excercise`
+-- Indexes for table `planned_exercise`
 --
-ALTER TABLE `planned_excercise`
-  ADD PRIMARY KEY (`planned_date`,`excercise_id`),
-  ADD KEY `excercise_id` (`excercise_id`);
+ALTER TABLE `planned_exercise`
+  ADD PRIMARY KEY (`planned_date`,`exercise_id`),
+  ADD KEY `excercise_id` (`exercise_id`);
 
 --
 -- Indexes for table `planned_workout`
@@ -225,15 +237,15 @@ ALTER TABLE `workout_categories`
 --
 
 --
--- AUTO_INCREMENT for table `excercises`
+-- AUTO_INCREMENT for table `exercises`
 --
-ALTER TABLE `excercises`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `exercises`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `muscles`
 --
 ALTER TABLE `muscles`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT for table `workout_categories`
 --
@@ -244,25 +256,25 @@ ALTER TABLE `workout_categories`
 --
 
 --
--- Constraints for table `excercise_muscle_mapping`
+-- Constraints for table `exercise_muscle_mapping`
 --
-ALTER TABLE `excercise_muscle_mapping`
-  ADD CONSTRAINT `excercise_muscle_mapping_ibfk_1` FOREIGN KEY (`excercise_id`) REFERENCES `excercises` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `excercise_muscle_mapping_ibfk_2` FOREIGN KEY (`muscle_id`) REFERENCES `muscles` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+ALTER TABLE `exercise_muscle_mapping`
+  ADD CONSTRAINT `exercise_muscle_mapping_ibfk_1` FOREIGN KEY (`exercise_id`) REFERENCES `exercises` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `exercise_muscle_mapping_ibfk_2` FOREIGN KEY (`muscle_id`) REFERENCES `muscles` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
--- Constraints for table `performed_excercise`
+-- Constraints for table `performed_exercise`
 --
-ALTER TABLE `performed_excercise`
-  ADD CONSTRAINT `performed_excercise_ibfk_1` FOREIGN KEY (`excercise_id`) REFERENCES `excercises` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `performed_excercise_ibfk_2` FOREIGN KEY (`performed_date`) REFERENCES `planned_workout` (`planned_date`) ON DELETE NO ACTION ON UPDATE CASCADE;
+ALTER TABLE `performed_exercise`
+  ADD CONSTRAINT `performed_exercise_ibfk_1` FOREIGN KEY (`exercise_id`) REFERENCES `exercises` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `performed_exercise_ibfk_2` FOREIGN KEY (`performed_date`) REFERENCES `planned_workout` (`planned_date`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
--- Constraints for table `planned_excercise`
+-- Constraints for table `planned_exercise`
 --
-ALTER TABLE `planned_excercise`
-  ADD CONSTRAINT `planned_excercise_ibfk_1` FOREIGN KEY (`excercise_id`) REFERENCES `excercises` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `planned_excercise_ibfk_2` FOREIGN KEY (`planned_date`) REFERENCES `planned_workout` (`planned_date`) ON DELETE NO ACTION ON UPDATE CASCADE;
+ALTER TABLE `planned_exercise`
+  ADD CONSTRAINT `planned_exercise_ibfk_1` FOREIGN KEY (`exercise_id`) REFERENCES `exercises` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `planned_exercise_ibfk_2` FOREIGN KEY (`planned_date`) REFERENCES `planned_workout` (`planned_date`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `planned_workout`
