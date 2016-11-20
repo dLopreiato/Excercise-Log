@@ -122,6 +122,6 @@ function GetDateString(inputDate)
         dateEnding = dateEndingsArray[dayAsInt % 10];
     }
 
-    return monthStrings[monthAsInt] + " " + dayAsInt + dateEnding;
+    return monthStrings[monthAsInt - 1] + " " + dayAsInt + dateEnding;
 }
 
